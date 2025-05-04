@@ -10,18 +10,16 @@
     "test": "jest"
   },
   "dependencies": {
-    "bullmq": "^4.12.1",
+    "bullmq": "^5.52.1",
     "cors": "2.8.5",
     "dotenv": "16.5.0",
     "express": "5.1.0",
     "helmet": "8.1.0",
-    "ioredis": "^5.3.2",
+    "ioredis": "^5.6.1",
     "morgan": "1.10.0",
-    "pg": "8.15.6",
-    "pg-pool": "3.6.1"
+    "pg": "8.15.6"
   },
   "devDependencies": {
-    "@types/bullmq": "^4.9.0",
     "@types/cors": "2.8.17",
     "@types/express": "5.0.1",
     "@types/morgan": "1.9.9",
@@ -30,5 +28,5 @@
     "ts-node-dev": "2.0.0",
     "typescript": "5.8.3"
   },
-  "packageManager": "pnpm@10.8.1"
+  "packageManager": "pnpm@10.10.0"
 }
