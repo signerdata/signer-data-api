@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { Signer } from '../entities/Signer';
+import { Signer } from '../types/signer';
 
 export class SignerDAO {
   constructor(private pool: Pool) {}
