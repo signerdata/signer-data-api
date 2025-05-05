@@ -1,63 +1,41 @@
 import { SignerDAO } from '../dao/SignerDAO';
-import { SignerProfile } from '../entities/Signer';
+import { Signer, SignerProfile } from '../types/signer';
+import { getTransactions } from './envio';
+import { calculateFullProfile } from './utils';
 
 export class SignerService {
   constructor(
     private signerDAO: SignerDAO,
-    // private redis: Redis,
-    // private cacheTTL: number = parseInt(process.env.PROFILE_CACHE_TTL || '1800')
   ) {}
 
-  // private getCacheKey(address: string): string {
-  //   return `profile:${address}`;
-  // }
-
-  async getSignerData(address: string): Promise<SignerProfile | undefined> {
-    // const cacheKey = this.getCacheKey(address);
-    // const cachedProfile = await this.redis.get(cacheKey);
-    
-    // if (cachedProfile) {
-    //   return JSON.parse(cachedProfile);
-    // }
-
+  async getProfile(address: string): Promise<SignerProfile | undefined> {
     const signer = await this.signerDAO.findByAddress(address);
-
     if (signer) {
-      // await profileUpdateQueue.add('update-profile', { address });
+      // const recentProfileData = await getTransactions({ address, startBlock: signer.blockNumber });
+      // const profile = await recalculateProfile({ address, transactions: recentProfileData.transactions });
+      // const newSigner: Signer = {
+      //   address,
+      //   profile,
+      //   transactionsCount: profileData.transactions.length,
+      //   blockNumber: profileData.lastBlockNumber,
+      //   blockTimestamp: profileData.lastBlockTimestamp
+      // };
+      // const updatedSigner = await this.signerDAO.update(newSigner);
       return signer.profile;
     }
-    // await profileFullCalculationQueue.add('calculate-profile', { address });
 
-    return;
+    const profileData = await getTransactions({ address, startBlock: 0 });
+    const profile = await calculateFullProfile({ address, transactions: profileData.transactions });
+
+    const newSigner: Signer = {
+      address,
+      profile,
+      transactionsCount: profileData.transactions.length,
+      blockNumber: profileData.lastBlockNumber,
+      blockTimestamp: profileData.lastBlockTimestamp
+    };
+    const createdSigner = await this.signerDAO.create(newSigner);
+
+    return createdSigner.profile;
   }
-
-  /*
-  async updateProfile(address: string): Promise<void> {
-    // TODO: Implement this
-
-    const signer = await this.signerDAO.update(address, {});
-
-    if (signer) {
-      await this.redis.setex(
-        this.getCacheKey(address),
-        this.cacheTTL,
-        JSON.stringify(signer)
-      );
-    }
-  }
-
-  async calculateFullProfile(address: string): Promise<void> {
-    // TODO: Implement this
-    
-    const signer = await this.signerDAO.create(address, {});
-
-    if (signer) {
-      await this.redis.setex(
-        this.getCacheKey(address),
-        this.cacheTTL,
-        JSON.stringify(signer)
-      );
-    }
-  }
-  */
 } 
