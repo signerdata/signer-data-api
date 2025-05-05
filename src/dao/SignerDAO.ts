@@ -20,14 +20,20 @@ export class SignerDAO {
         INSERT INTO signers (
           address,
           profile,
+          transactions_count,
+          block_number,
+          block_timestamp,
           created_at,
           updated_at
-        ) VALUES ($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        ) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
         RETURNING *
       `,
       values: [
         signer.address,
-        JSON.stringify(signer.profile)
+        JSON.stringify(signer.profile),
+        signer.transactionsCount,
+        signer.blockNumber,
+        signer.blockTimestamp
       ],
     };
 
@@ -39,12 +45,20 @@ export class SignerDAO {
     const query = {
       text: `
         UPDATE signers 
-        SET profile = $1, updated_at = CURRENT_TIMESTAMP
-        WHERE address = $2
+        SET
+          profile = $1,
+          transactions_count = $2,
+          block_number = $3,
+          block_timestamp = $4,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE address = $5
         RETURNING *
       `,
       values: [
         JSON.stringify(signer.profile),
+        signer.transactionsCount,
+        signer.blockNumber,
+        signer.blockTimestamp,
         signer.address
       ],
     };
