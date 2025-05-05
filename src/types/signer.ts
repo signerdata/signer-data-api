@@ -3,7 +3,6 @@ import { Transaction } from "./transactions";
 export type SignerProfile = {
   account: {
     ageDays: number;
-    activeDaysCount: number;
   },
   transactions: {
     all: {
