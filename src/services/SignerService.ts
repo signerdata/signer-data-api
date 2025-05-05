@@ -1,5 +1,5 @@
 import { SignerDAO } from '../dao/SignerDAO';
-import { Signer } from '../entities/Signer';
+import { SignerProfile } from '../entities/Signer';
 
 export class SignerService {
   constructor(
@@ -12,7 +12,7 @@ export class SignerService {
   //   return `profile:${address}`;
   // }
 
-  async getSignerData(address: string): Promise<Signer | undefined> {
+  async getSignerData(address: string): Promise<SignerProfile | undefined> {
     // const cacheKey = this.getCacheKey(address);
     // const cachedProfile = await this.redis.get(cacheKey);
     
@@ -20,11 +20,11 @@ export class SignerService {
     //   return JSON.parse(cachedProfile);
     // }
 
-    const profile = await this.signerDAO.findByAddress(address);
+    const signer = await this.signerDAO.findByAddress(address);
 
-    if (profile) {
+    if (signer) {
       // await profileUpdateQueue.add('update-profile', { address });
-      return profile;
+      return signer.profile;
     }
     // await profileFullCalculationQueue.add('calculate-profile', { address });
 

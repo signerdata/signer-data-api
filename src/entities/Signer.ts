@@ -1,4 +1,4 @@
-export type Profile = {
+export type SignerProfile = {
   transactions: {
     firstTransactionDate: Date;
     lastTransactionDate: Date;
@@ -23,29 +23,25 @@ export type Profile = {
     // volumeOutLastWeek: string;
   }[]
   interactions: {
-    calls: {
-      address: string;
-      count: number;
-    }[],
-    // callsLastMonth: {
-    //   address: string;
-    //   count: number;
-    // }[],
-    // callsLastWeek: {
-    //   address: string;
-    //   count: number;
-    // }[],
-  }
-  deployments: {
-    contractDeployments: string[],
-    // contractDeploymentsLastMonth: string[],
-    // contractDeploymentsLastWeek: string[],
-  }
+    address: string;
+    count: number;
+  }[],
+  // callsLastMonth: {
+  //   address: string;
+  //   count: number;
+  // }[],
+  // callsLastWeek: {
+  //   address: string;
+  //   count: number;
+  // }[],
+  contractDeployments: string[],
+  // contractDeploymentsLastMonth: string[],
+  // contractDeploymentsLastWeek: string[],
 }
 
 export type Signer = {
   address: string;
-  profile: Profile;
+  profile: SignerProfile;
   createdAt?: Date;
   updatedAt?: Date;
 }
