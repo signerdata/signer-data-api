@@ -1,5 +1,3 @@
-import { Transaction } from "./transactions";
-
 export type SignerProfile = {
   account: {
     ageDays: number;
@@ -12,8 +10,8 @@ export type SignerProfile = {
       frequencyAll: number;
       frequency30d: number;
       frequency7d: number;
-      firstTransaction: Date;
-      lastTransaction: Date;
+      firstTransaction?: Date;
+      lastTransaction?: Date;
       spanDays: number;
       activeDaysCount: number;
     },
@@ -24,8 +22,8 @@ export type SignerProfile = {
       frequencyAll: number;
       frequency30d: number;
       frequency7d: number;
-      firstTransaction: Date;
-      lastTransaction: Date;
+      firstTransaction?: Date;
+      lastTransaction?: Date;
       spanDays: number;
       activeDaysCount: number;
     },
@@ -36,50 +34,45 @@ export type SignerProfile = {
       frequencyAll: number;
       frequency30d: number;
       frequency7d: number;
-      firstTransaction: Date;
-      lastTransaction: Date;
+      firstTransaction?: Date;
+      lastTransaction?: Date;
       spanDays: number;
       activeDaysCount: number;
     }
   },
   tokens: {
     address: string;
-    //balance: string;
     volume: string;
-    // volumeLastMonth: string;
-    // volumeLastWeek: string;
     volumeIn: string;
-    // volumeInLastMonth: string;
-    // volumeInLastWeek: string;
     volumeOut: string;
-    // volumeOutLastMonth: string;
-    // volumeOutLastWeek: string;
   }[]
   interactions: {
     address: string;
     count: number;
   }[],
-  // callsLastMonth: {
-  //   address: string;
-  //   count: number;
-  // }[],
-  // callsLastWeek: {
-  //   address: string;
-  //   count: number;
-  // }[],
   contractsDeployed: number,
-  // contractsDeployedLastMonth: number,
-  // contractsDeployedLastWeek: number,
 }
 
 export type Signer = {
   address: string;
+  chainId: number;
   profile: SignerProfile;
   transactionsCount: number;
   blockNumber: number;
   blockTimestamp: Date;
-  createdAt?: Date;
-  updatedAt?: Date;
+}
+
+export type Transaction = {
+  blockNumber: number;
+  timestamp: number;
+  nonce: number;
+  from?: string;
+  to?: string;
+  value: string;
+  data: string;
+  gasUsed: string;
+  gasPrice: string;
+  contractAddress?: string;
 }
 
 export type ProfileData = {
