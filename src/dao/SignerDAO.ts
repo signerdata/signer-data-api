@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
-import { Signer } from '../types/signer';
+import { Signer } from '../types';
 
-export class SignerDAO {
+class SignerDAO {
   constructor(private pool: Pool) {}
 
   async findByAddress(address: string): Promise<Signer> {
@@ -19,17 +19,17 @@ export class SignerDAO {
       text: `
         INSERT INTO signers (
           address,
+          chain_id,
           profile,
           transactions_count,
           block_number,
-          block_timestamp,
-          created_at,
-          updated_at
-        ) VALUES ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+          block_timestamp
+        ) VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *
       `,
       values: [
         signer.address,
+        signer.chainId,
         JSON.stringify(signer.profile),
         signer.transactionsCount,
         signer.blockNumber,
@@ -76,3 +76,5 @@ export class SignerDAO {
     return this.create(signer);
   }
 }
+
+export default SignerDAO;
