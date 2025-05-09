@@ -1,20 +1,22 @@
 import { Router } from 'express';
 import pool from '../config/database';
 // import redis from '../config/redis';
-import { SignerController } from '../controllers/SignerController';
-import { SignerDAO } from '../dao/SignerDAO';
-import { SignerService } from '../services/SignerService';
+import SignerController from '../controllers/SignerController';
+import LoginDAO from '../dao/LoginDAO';
+import SignerDAO from '../dao/SignerDAO';
+import SignerService from '../services/profiles/SignerService';
 
 const router = Router();
 const signerDAO = new SignerDAO(pool);
-const signerService = new SignerService(signerDAO /*, redis */);
+const loginDAO = new LoginDAO(pool);
+const signerService = new SignerService(signerDAO, loginDAO);
 const signerController = new SignerController(signerService);
 
 /**
  * @swagger
- * /api/v1/signer/login/{address}:
+ * /api/v1/signer/{address}:
  *   post:
- *     description: Tracks the signer's address during the login process and returns its onchain profile
+ *     description: Records a login event for the signer and returns its latest onchain profile data
  *     tags:
  *       - Signer
  *     parameters:
@@ -25,6 +27,13 @@ const signerController = new SignerController(signerService);
  *           type: string
  *           example: "0x1234567890123456789012345678901234567890"
  *         description: The address of the signer
+ *       - in: body
+ *         name: applicationId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "123e4567-e89b-12d3-a456-426614174000"
+ *         description: The id of the application
  *     responses:
  *       200:
  *         description: OK
@@ -53,6 +62,6 @@ const signerController = new SignerController(signerService);
  *                   type: string
  *                   example: "Unexpected error"
  */
-router.post('/login/:address', (req, res) => signerController.loginSigner(req, res));
+router.post('/:address', (req, res) => signerController.loginSigner(req, res));
 
 export default router;

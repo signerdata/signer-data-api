@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
 import { isAddress } from 'viem';
-import { SignerService } from '../services/SignerService';
+import { BASE_CHAIN_ID } from '../config/constants';
+import SignerService from '../services/profiles/SignerService';
 
-export class SignerController {
+class SignerController {
   constructor(private signerService: SignerService) {}
 
   async loginSigner(req: Request, res: Response): Promise<void> {
     try {
       const { address } = req.params;
+      const { applicationId } = req.body;
 
       const isValidAddress = isAddress(address);
       if (!isValidAddress) {
@@ -16,8 +18,18 @@ export class SignerController {
         });
         return;
       }
-      
-      const profile = await this.signerService.getProfile(address);
+      if (!applicationId) {
+        res.status(400).json({
+          message: 'Invalid applicationId'
+        });
+        return;
+      }
+
+      const profile = await this.signerService.getProfile({
+        address,
+        applicationId,
+        chainId: BASE_CHAIN_ID
+      });
       if (!profile) {
         res.status(404).json({
           message: 'Signer not found'
@@ -33,4 +45,6 @@ export class SignerController {
       });
     }
   }
-} 
+}
+
+export default SignerController;
