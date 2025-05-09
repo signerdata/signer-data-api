@@ -1,16 +1,33 @@
 import { getAddress } from 'viem';
-import { SignerDAO } from '../dao/SignerDAO';
-import { Signer, SignerProfile } from '../types/signer';
-import { getTransactions } from './envio';
-import { calculateFullProfile } from './utils';
+import { BASE_CHAIN_ID } from '../../config/constants';
+import LoginDAO from '../../dao/LoginDAO';
+import SignerDAO from '../../dao/SignerDAO';
+import { Signer, SignerProfile } from '../../types';
+import { getTransactions } from '../envio';
+import { calculateFullProfile } from '../profiles/utils';
 
-export class SignerService {
+class SignerService {
   constructor(
     private signerDAO: SignerDAO,
+    private loginDAO: LoginDAO,
   ) {}
 
-  async getProfile(address: string): Promise<SignerProfile | undefined> {
+  async getProfile({
+    address,
+    applicationId,
+    chainId
+  }: {
+    address: string,
+    applicationId: string,
+    chainId: number
+  }): Promise<SignerProfile | undefined> {
     const checksummedAddress = getAddress(address);
+
+    await this.loginDAO.create({
+      applicationId,
+      chainId,
+      signerAddress: checksummedAddress
+    });
 
     const signer = await this.signerDAO.findByAddress(checksummedAddress);
     if (signer) {
@@ -33,6 +50,7 @@ export class SignerService {
 
     const newSigner: Signer = {
       address: checksummedAddress,
+      chainId: BASE_CHAIN_ID,
       profile,
       transactionsCount: profileData.transactions.length,
       blockNumber: profileData.lastBlockNumber,
@@ -43,3 +61,5 @@ export class SignerService {
     return createdSigner.profile;
   }
 } 
+
+export default SignerService;

@@ -6,8 +6,7 @@ import {
   TransactionSelection
 } from '@envio-dev/hypersync-client'
 import { getAddress } from 'viem'
-import { ProfileData } from '../../types/signer'
-import { Transaction } from '../../types/transactions'
+import { ProfileData, Transaction } from '../../types'
 
 export async function getTransactions({
   address,
@@ -34,6 +33,7 @@ export async function getTransactions({
   let nextBlock: number | undefined = startBlock
   const allTransactions: Transaction[] = []
   
+  console.log(`START ${address} ${nextBlock}`)
   while(nextBlock !== undefined) {
     const query: Query = {
       fromBlock: Number(nextBlock),
@@ -78,12 +78,15 @@ export async function getTransactions({
     
     allTransactions.push(...formattedPartialTransactions)
     nextBlock = result.archiveHeight && result.nextBlock > result.archiveHeight ? undefined : result.nextBlock
+
+    console.log(`PARTIAL ${address} ${nextBlock} ${formattedPartialTransactions.length} ${allTransactions.length}`)
   }
+  console.log(`END ${address} ${nextBlock} ${allTransactions.length}`)
 
   const lastTransaction = allTransactions[allTransactions.length - 1]
   return {
     transactions: allTransactions,
-    lastBlockNumber: lastTransaction.blockNumber,
-    lastBlockTimestamp: new Date(lastTransaction.timestamp * 1000)
+    lastBlockNumber: lastTransaction?.blockNumber || 0,
+    lastBlockTimestamp: lastTransaction ? new Date(lastTransaction.timestamp * 1000) : new Date()
   }
 }
