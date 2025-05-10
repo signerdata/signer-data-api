@@ -6,6 +6,7 @@ import morgan from 'morgan';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerOptions } from './config/swagger';
+import dashboardRoutes from './routes/dashboardRoutes';
 import signerRoutes from './routes/signerRoutes';
 
 dotenv.config();
@@ -30,7 +31,8 @@ app.get('/', swaggerUi.setup(swaggerSpec, {
 }));
 
 // Routes
-app.use('/api/v1/signer', signerRoutes);
+app.use('/api/v1/signers', signerRoutes);
+app.use('/api/v1/dashboard', dashboardRoutes);
 
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
