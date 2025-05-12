@@ -57,9 +57,7 @@ export function calculateFullProfile({
   }
 
   const inTransactions = transactions.filter((tx) => tx.to === address)
-  console.log(inTransactions.length)
   const outTransactions = transactions.filter((tx) => tx.from === address)
-  console.log(outTransactions.length)
 
   const firstOutTransaction =
     outTransactions.length > 0 ? new Date(outTransactions[0].timestamp * 1000) : undefined

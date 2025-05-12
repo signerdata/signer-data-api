@@ -69,7 +69,6 @@ class LoginDAO {
     endDate: Date
     chainId: number
   }): Promise<ProfileLogin[]> {
-    console.log(startDate, endDate)
     const query = {
       text: `
         SELECT 
@@ -89,9 +88,6 @@ class LoginDAO {
     }
 
     const result = await this.pool.query(query)
-    result.rows.forEach((row) => {
-      console.log(row)
-    })
     return result.rows
   }
 

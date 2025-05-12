@@ -40,7 +40,7 @@ const signerController = new SignerController(signerService)
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Signer'
+ *               $ref: '#/components/schemas/SignerProfile'
  *       400:
  *         description: Bad Request
  *         content:
