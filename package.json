@@ -11,31 +11,31 @@
     "test": "jest"
   },
   "dependencies": {
-    "@envio-dev/hypersync-client": "^0.6.3",
+    "@envio-dev/hypersync-client": "^0.6.4",
     "@supabase/supabase-js": "^2.49.4",
-    "bullmq": "^5.52.1",
+    "bullmq": "^5.52.2",
     "cors": "2.8.5",
     "dotenv": "16.5.0",
     "express": "5.1.0",
     "helmet": "8.1.0",
     "ioredis": "^5.6.1",
     "morgan": "1.10.0",
-    "pg": "8.15.6",
+    "pg": "8.16.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "viem": "^2.29.0"
+    "viem": "^2.29.3"
   },
   "devDependencies": {
-    "@types/cors": "2.8.17",
+    "@types/cors": "2.8.18",
     "@types/express": "5.0.1",
     "@types/morgan": "1.9.9",
-    "@types/node": "22.15.3",
-    "@types/pg": "8.11.14",
+    "@types/node": "22.15.18",
+    "@types/pg": "8.15.2",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "prettier": "^3.5.3",
     "ts-node-dev": "2.0.0",
     "typescript": "5.8.3"
   },
-  "packageManager": "pnpm@10.10.0"
+  "packageManager": "pnpm@10.11.0"
 }
