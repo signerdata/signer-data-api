@@ -1,16 +1,16 @@
-import { Router } from 'express';
-import pool from '../config/database';
+import { Router } from 'express'
+import pool from '../config/database'
 // import redis from '../config/redis';
-import SignerController from '../controllers/SignerController';
-import LoginDAO from '../dao/LoginDAO';
-import SignerDAO from '../dao/SignerDAO';
-import SignerService from '../services/profiles/SignerService';
+import SignerController from '../controllers/SignerController'
+import LoginDAO from '../dao/LoginDAO'
+import SignerDAO from '../dao/SignerDAO'
+import SignerService from '../services/profiles/SignerService'
 
-const router = Router();
-const signerDAO = new SignerDAO(pool);
-const loginDAO = new LoginDAO(pool);
-const signerService = new SignerService(signerDAO, loginDAO);
-const signerController = new SignerController(signerService);
+const router = Router()
+const signerDAO = new SignerDAO(pool)
+const loginDAO = new LoginDAO(pool)
+const signerService = new SignerService(signerDAO, loginDAO)
+const signerController = new SignerController(signerService)
 
 /**
  * @swagger
@@ -62,6 +62,6 @@ const signerController = new SignerController(signerService);
  *                   type: string
  *                   example: "Unexpected error"
  */
-router.post('/:address', (req, res) => signerController.loginSigner(req, res));
+router.post('/:address', (req, res) => signerController.loginSigner(req, res))
 
-export default router;
+export default router

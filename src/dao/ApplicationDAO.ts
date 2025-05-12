@@ -1,5 +1,5 @@
-import { Pool } from 'pg';
-import { Application, NewApplication } from '../types';
+import { Pool } from 'pg'
+import { Application, NewApplication } from '../types'
 
 class ApplicationDAO {
   constructor(private pool: Pool) {}
@@ -8,30 +8,30 @@ class ApplicationDAO {
     const query = {
       text: 'SELECT * FROM applications WHERE id = $1',
       values: [id],
-    };
+    }
 
-    const result = await this.pool.query(query);
-    return result.rows[0];
+    const result = await this.pool.query(query)
+    return result.rows[0]
   }
 
   async findByDomain(domain: string): Promise<Application> {
     const query = {
       text: 'SELECT * FROM applications WHERE domain = $1',
       values: [domain],
-    };
+    }
 
-    const result = await this.pool.query(query);
-    return result.rows[0];
+    const result = await this.pool.query(query)
+    return result.rows[0]
   }
 
   async findByUserId(userId: string): Promise<Application[]> {
     const query = {
       text: 'SELECT * FROM applications WHERE user_id = $1',
       values: [userId],
-    };
+    }
 
-    const result = await this.pool.query(query);
-    return result.rows;
+    const result = await this.pool.query(query)
+    return result.rows
   }
 
   async create(application: NewApplication): Promise<Application> {
@@ -45,16 +45,11 @@ class ApplicationDAO {
         ) VALUES ($1, $2, $3, $4)
         RETURNING *
       `,
-      values: [
-        application.userId,
-        application.name,
-        application.description,
-        application.domain,
-      ],
-    };
+      values: [application.userId, application.name, application.description, application.domain],
+    }
 
-    const result = await this.pool.query(query);
-    return result.rows[0];
+    const result = await this.pool.query(query)
+    return result.rows[0]
   }
 
   async update(application: Application): Promise<Application> {
@@ -75,13 +70,13 @@ class ApplicationDAO {
         application.description,
         application.domain,
         application.active,
-        application.id
+        application.id,
       ],
-    };
+    }
 
-    const result = await this.pool.query(query);
-    return result.rows[0];
+    const result = await this.pool.query(query)
+    return result.rows[0]
   }
 }
 
-export default ApplicationDAO;
+export default ApplicationDAO

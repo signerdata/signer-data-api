@@ -1,5 +1,5 @@
-import { Pool } from 'pg';
-import { Signer } from '../types';
+import { Pool } from 'pg'
+import { Signer } from '../types'
 
 class SignerDAO {
   constructor(private pool: Pool) {}
@@ -8,10 +8,10 @@ class SignerDAO {
     const query = {
       text: 'SELECT * FROM signers WHERE address = $1',
       values: [address],
-    };
+    }
 
-    const result = await this.pool.query(query);
-    return result.rows[0];
+    const result = await this.pool.query(query)
+    return result.rows[0]
   }
 
   async create(signer: Signer): Promise<Signer> {
@@ -33,12 +33,12 @@ class SignerDAO {
         JSON.stringify(signer.profile),
         signer.transactionsCount,
         signer.blockNumber,
-        signer.blockTimestamp
+        signer.blockTimestamp,
       ],
-    };
+    }
 
-    const result = await this.pool.query(query);
-    return result.rows[0];
+    const result = await this.pool.query(query)
+    return result.rows[0]
   }
 
   async update(signer: Signer): Promise<Signer> {
@@ -59,22 +59,22 @@ class SignerDAO {
         signer.transactionsCount,
         signer.blockNumber,
         signer.blockTimestamp,
-        signer.address
+        signer.address,
       ],
-    };
+    }
 
-    const result = await this.pool.query(query);
-    return result.rows[0];
+    const result = await this.pool.query(query)
+    return result.rows[0]
   }
 
   async createOrUpdate(signer: Signer): Promise<Signer> {
-    const existingSigner = await this.findByAddress(signer.address);
-    
+    const existingSigner = await this.findByAddress(signer.address)
+
     if (existingSigner) {
-      return this.update(signer);
+      return this.update(signer)
     }
-    return this.create(signer);
+    return this.create(signer)
   }
 }
 
-export default SignerDAO;
+export default SignerDAO

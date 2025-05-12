@@ -1,16 +1,16 @@
-import { Router } from 'express';
-import pool from '../config/database';
+import { Router } from 'express'
+import pool from '../config/database'
 // import redis from '../config/redis';
-import DashboardController from '../controllers/DashboardController';
-import ApplicationDAO from '../dao/ApplicationDAO';
-import LoginDAO from '../dao/LoginDAO';
-import DashboardService from '../services/dashboard/DashboardService';
+import DashboardController from '../controllers/DashboardController'
+import ApplicationDAO from '../dao/ApplicationDAO'
+import LoginDAO from '../dao/LoginDAO'
+import DashboardService from '../services/dashboard/DashboardService'
 
-const router = Router();
-const loginDAO = new LoginDAO(pool);
-const applicationDAO = new ApplicationDAO(pool);
-const dashboardService = new DashboardService(loginDAO, applicationDAO);
-const dashboardController = new DashboardController(dashboardService);
+const router = Router()
+const loginDAO = new LoginDAO(pool)
+const applicationDAO = new ApplicationDAO(pool)
+const dashboardService = new DashboardService(loginDAO, applicationDAO)
+const dashboardController = new DashboardController(dashboardService)
 
 /**
  * @swagger
@@ -60,7 +60,7 @@ const dashboardController = new DashboardController(dashboardService);
  *                   type: string
  *                   example: "Unexpected error"
  */
-router.post('/applications', (req, res) => dashboardController.createApp(req, res));
+router.post('/applications', (req, res) => dashboardController.createApp(req, res))
 
 /**
  * @swagger
@@ -119,7 +119,9 @@ router.post('/applications', (req, res) => dashboardController.createApp(req, re
  *                   type: string
  *                   example: "Unexpected error"
  */
-router.get('/applications/:applicationId', (req, res) => dashboardController.getLoginsFromApp(req, res));
+router.get('/applications/:applicationId', (req, res) =>
+  dashboardController.getLoginsFromApp(req, res)
+)
 
 /**
  * @swagger
@@ -160,6 +162,6 @@ router.get('/applications/:applicationId', (req, res) => dashboardController.get
  *                   type: string
  *                   example: "Unexpected error"
  */
-router.get('/applications', (req, res) => dashboardController.getAppsFromUser(req, res));
+router.get('/applications', (req, res) => dashboardController.getAppsFromUser(req, res))
 
-export default router;
+export default router

@@ -3,16 +3,16 @@ import {
   HypersyncClient,
   Query,
   TransactionField,
-  TransactionSelection
+  TransactionSelection,
 } from '@envio-dev/hypersync-client'
 import { getAddress } from 'viem'
 import { ProfileData, Transaction } from '../../types'
 
 export async function getTransactions({
   address,
-  startBlock = 0
+  startBlock = 0,
 }: {
-  address: string,
+  address: string
   startBlock: number
 }): Promise<ProfileData> {
   const transactionQuery: TransactionSelection[] = [
@@ -20,29 +20,26 @@ export async function getTransactions({
       from: [address],
     },
     {
-      to: [address]
-    }
+      to: [address],
+    },
   ]
 
   // https://docs.envio.dev/docs/HyperSync/hypersync-supported-networks
   const network = 'eth'
   const client = HypersyncClient.new({
-    url: `https://${network}.hypersync.xyz`
+    url: `https://${network}.hypersync.xyz`,
   })
 
   let nextBlock: number | undefined = startBlock
   const allTransactions: Transaction[] = []
-  
-  console.log(`START ${address} ${nextBlock}`)
-  while(nextBlock !== undefined) {
+
+  console.log(`Build profile for ${address} from block ${nextBlock}`)
+  while (nextBlock !== undefined) {
     const query: Query = {
       fromBlock: Number(nextBlock),
       transactions: transactionQuery,
       fieldSelection: {
-        block: [
-          BlockField.Number,
-          BlockField.Timestamp
-        ],
+        block: [BlockField.Number, BlockField.Timestamp],
         transaction: [
           TransactionField.BlockNumber,
           TransactionField.Hash,
@@ -53,9 +50,9 @@ export async function getTransactions({
           TransactionField.Nonce,
           TransactionField.GasPrice,
           TransactionField.GasUsed,
-          TransactionField.ContractAddress
-        ]
-      }
+          TransactionField.ContractAddress,
+        ],
+      },
     }
 
     const result = await client.get(query)
@@ -73,20 +70,19 @@ export async function getTransactions({
       data: tx.input || '0x',
       gasUsed: tx.gasUsed?.toString() || '0',
       gasPrice: tx.gasPrice?.toString() || '0',
-      contractAddress: tx.contractAddress
+      contractAddress: tx.contractAddress,
     }))
-    
-    allTransactions.push(...formattedPartialTransactions)
-    nextBlock = result.archiveHeight && result.nextBlock > result.archiveHeight ? undefined : result.nextBlock
 
-    console.log(`PARTIAL ${address} ${nextBlock} ${formattedPartialTransactions.length} ${allTransactions.length}`)
+    allTransactions.push(...formattedPartialTransactions)
+    nextBlock =
+      result.archiveHeight && result.nextBlock > result.archiveHeight ? undefined : result.nextBlock
   }
-  console.log(`END ${address} ${nextBlock} ${allTransactions.length}`)
+  console.log(`Built profile for ${address} with ${allTransactions.length} transactions`)
 
   const lastTransaction = allTransactions[allTransactions.length - 1]
   return {
     transactions: allTransactions,
     lastBlockNumber: lastTransaction?.blockNumber || 0,
-    lastBlockTimestamp: lastTransaction ? new Date(lastTransaction.timestamp * 1000) : new Date()
+    lastBlockTimestamp: lastTransaction ? new Date(lastTransaction.timestamp * 1000) : new Date(),
   }
 }

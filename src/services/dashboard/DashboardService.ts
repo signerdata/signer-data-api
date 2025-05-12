@@ -1,6 +1,6 @@
-import ApplicationDAO from '../../dao/ApplicationDAO';
-import LoginDAO from '../../dao/LoginDAO';
-import { Application, NewApplication, ProfileLogin } from '../../types';
+import ApplicationDAO from '../../dao/ApplicationDAO'
+import LoginDAO from '../../dao/LoginDAO'
+import { Application, NewApplication, ProfileLogin } from '../../types'
 
 class DashboardService {
   constructor(
@@ -9,41 +9,37 @@ class DashboardService {
   ) {}
 
   async createApp(application: NewApplication): Promise<Application> {
-    const newApplication = await this.applicationDAO.create(application);
+    const newApplication = await this.applicationDAO.create(application)
 
-    return newApplication;
+    return newApplication
   }
 
   async getProfileLoginsFromApp({
     applicationId,
     startDate,
     endDate,
-    chainId
+    chainId,
   }: {
-    applicationId: string,
-    startDate: Date,
-    endDate: Date,
+    applicationId: string
+    startDate: Date
+    endDate: Date
     chainId: number
   }): Promise<ProfileLogin[] | undefined> {
     const profileLogins = await this.loginDAO.findProfileLogins({
       applicationId,
       startDate,
       endDate,
-      chainId
-    });
+      chainId,
+    })
 
-    return profileLogins;
+    return profileLogins
   }
 
-  async getAppsFromUser({
-    userId
-  }: {
-    userId: string
-  }): Promise<Application[]> {
-    const applications = await this.applicationDAO.findByUserId(userId);
+  async getAppsFromUser({ userId }: { userId: string }): Promise<Application[]> {
+    const applications = await this.applicationDAO.findByUserId(userId)
 
-    return applications;
+    return applications
   }
 }
 
-export default DashboardService;
+export default DashboardService

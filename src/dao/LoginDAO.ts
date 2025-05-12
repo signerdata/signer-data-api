@@ -1,5 +1,5 @@
-import { Pool } from 'pg';
-import { Login, NewLogin, ProfileLogin } from '../types';
+import { Pool } from 'pg'
+import { Login, NewLogin, ProfileLogin } from '../types'
 
 class LoginDAO {
   constructor(private pool: Pool) {}
@@ -19,15 +19,11 @@ class LoginDAO {
           updated_at = CURRENT_TIMESTAMP
         RETURNING *
       `,
-      values: [
-        login.applicationId,
-        login.chainId,
-        login.signerAddress
-      ],
-    };
+      values: [login.applicationId, login.chainId, login.signerAddress],
+    }
 
-    const result = await this.pool.query(query);
-    return result.rows[0];
+    const result = await this.pool.query(query)
+    return result.rows[0]
   }
 
   /*
@@ -66,15 +62,14 @@ class LoginDAO {
     applicationId,
     startDate,
     endDate,
-    chainId
+    chainId,
   }: {
-    applicationId: string,
-    startDate: Date,
-    endDate: Date,
+    applicationId: string
+    startDate: Date
+    endDate: Date
     chainId: number
   }): Promise<ProfileLogin[]> {
-
-    console.log(startDate, endDate);
+    console.log(startDate, endDate)
     const query = {
       text: `
         SELECT 
@@ -90,19 +85,14 @@ class LoginDAO {
           logins.date BETWEEN $2 AND $3 AND
           logins.chain_id = $4
       `,
-      values: [
-        applicationId,
-        startDate,
-        endDate,
-        chainId
-      ],
-    };
+      values: [applicationId, startDate, endDate, chainId],
+    }
 
-    const result = await this.pool.query(query);
-    result.rows.forEach(row => {
+    const result = await this.pool.query(query)
+    result.rows.forEach((row) => {
       console.log(row)
-    });
-    return result.rows;
+    })
+    return result.rows
   }
 
   /*
@@ -162,4 +152,4 @@ class LoginDAO {
   */
 }
 
-export default LoginDAO;
+export default LoginDAO
