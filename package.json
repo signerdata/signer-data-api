@@ -8,7 +8,9 @@
     "dev:worker": "ts-node-dev --respawn --transpile-only src/worker.ts",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md}\"",
     "build": "tsc",
-    "test": "jest"
+    "unbuild": "rimraf dist",
+    "prod:deploy": "pm2 start dist/index.js --name 'signer-data-api'",
+    "prod:undeploy": "pm2 stop 'signer-data-api'"
   },
   "dependencies": {
     "@envio-dev/hypersync-client": "^0.6.4",
@@ -33,7 +35,9 @@
     "@types/pg": "8.15.2",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "pm2": "^6.0.6",
     "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
     "ts-node-dev": "2.0.0",
     "typescript": "5.8.3"
   },
