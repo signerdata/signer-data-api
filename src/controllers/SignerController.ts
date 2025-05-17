@@ -24,7 +24,7 @@ class SignerController {
         })
         return
       }
-
+      
       const profile = await this.signerService.getProfile({
         address,
         applicationId,

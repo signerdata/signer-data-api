@@ -25,7 +25,8 @@ export async function getTransactions({
   ]
 
   // https://docs.envio.dev/docs/HyperSync/hypersync-supported-networks
-  const network = 'eth'
+  const network = 'base'
+  console.log('network', network)
   const client = HypersyncClient.new({
     url: `https://${network}.hypersync.xyz`,
   })
